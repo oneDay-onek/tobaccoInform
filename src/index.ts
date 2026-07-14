@@ -133,7 +133,8 @@ async function main() {
 
     for (const r of toNotify) {
       const { product, result } = r;
-      lines.push(`**${product.name}** (${product.site === 'life' ? '生活站' : 'SP站'})`);
+      const siteName = { life: '生活站', sp: 'SP站', uncle: '茄营站' }[product.site] || product.site;
+      lines.push(`**${product.name}** (${siteName})`);
       if (result.detail) {
         lines.push(`> ${result.detail}`);
       }
