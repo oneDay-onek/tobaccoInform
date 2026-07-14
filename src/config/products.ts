@@ -3,7 +3,7 @@
  * 每个商品定义:站点点位、名称、URL、以及该站点解析所需的额外信息
  */
 
-export type SiteKey = 'life' | 'sp';
+export type SiteKey = 'life' | 'sp' | 'uncle';
 
 export interface ProductConfig {
   /** 站点点位标识 */
@@ -102,5 +102,52 @@ export const PRODUCTS: ProductConfig[] = [
     site: 'sp',
     name: '索兰尼633 100g',
     url: 'https://www.smokingpipes.com/pipe-tobacco/solani/virginia-flake---633-100g/product_id/4436',
+  },
+
+  // ============ Uncle站 ============
+  {
+    site: 'uncle',
+    name: 'FVP 250g',
+    url: 'https://www.pipeuncle.com/products/300',
+  },
+  {
+    site: 'uncle',
+    name: '圣詹砖 250g',
+    url: 'https://www.pipeuncle.com/products/301',
+  },
+  {
+    site: 'uncle',
+    name: 'FVF 50g',
+    url: 'https://www.pipeuncle.com/products/2057',
+  },
+  {
+    site: 'uncle',
+    name: '圣詹切片 50g',
+    url: 'https://www.pipeuncle.com/products/2058',
+  },
+  {
+    site: 'uncle',
+    name: 'F&T小白 50g',
+    url: 'https://www.pipeuncle.com/products/591',
+  },
+  {
+    site: 'uncle',
+    name: 'F&T特殊布朗 50g',
+    url: 'https://www.pipeuncle.com/products/594',
+  },
+  {
+    site: 'uncle',
+    name: 'F&T混合切 50g',
+    url: 'https://www.pipeuncle.com/products/593',
+  },
+  {
+    site: 'uncle',
+    name: '索兰尼633 100g',
+    url: 'https://www.pipeuncle.com/products/612',
+  },
+  {
+    site: 'uncle',
+    name: '威棍子 275g',
+    url: 'https://www.pipeuncle.com/products/2864',
   },
 ];

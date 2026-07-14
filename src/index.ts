@@ -10,6 +10,7 @@
 import { PRODUCTS, ProductConfig } from './config/products';
 import { LifeMonitor } from './monitors/life.monitor';
 import { SpMonitor } from './monitors/sp.monitor';
+import { UncleMonitor } from './monitors/uncle.monitor';
 import { SiteMonitor, StockResult } from './monitors/base';
 import { QyWechatNotifier } from './notifier/qywechat';
 import { StateStorage } from './storage/state';
@@ -38,6 +39,9 @@ function getMonitor(site: string): SiteMonitor {
         break;
       case 'sp':
         monitorCache[site] = new SpMonitor();
+        break;
+      case 'uncle':
+        monitorCache[site] = new UncleMonitor();
         break;
       default:
         throw new Error(`未知站点: ${site}`);
@@ -97,7 +101,7 @@ async function main() {
       console.error(`[${product.site}] ${product.name}: 查询失败 - ${msg}`);
       results.push({ product, result: { inStock: false }, error: msg });
     }
-    // 请求间隔,避免触发限流(生活站2秒,SP站1秒)
+    // 请求间隔,避免触发限流(生活站2秒,SP站1秒,Uncle站1秒)
     await sleep(product.site === 'life' ? 2000 : 1000);
   }
 
