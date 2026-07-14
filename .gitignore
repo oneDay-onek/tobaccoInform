@@ -11,6 +11,9 @@ state.json
 .env
 .env.local
 
+# 本地文档(不纳入版本控制)
+USAGE.md
+
 # 系统
 .DS_Store
 *.log
