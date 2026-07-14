@@ -172,6 +172,6 @@ export const PRODUCTS: ProductConfig[] = [
   {
     site: 'life',
     name: '黄绞盘 50g',
-    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E7%BB%9E%E7%9B%98-%E5%8E%9F%E7%89%88-%E5%88%87%E7%89%87-5-%E9%93%81%E7%BD%9050%E5%85%8B',
+    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E7%BB%9E%E7%9B%98-%E9%87%91%E5%AD%90-%E5%88%87%E7%89%87-5-%E9%93%81%E7%BD%9050%E5%85%8B',
   },
 ];
