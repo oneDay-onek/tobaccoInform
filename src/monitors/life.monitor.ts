@@ -38,23 +38,26 @@ export class LifeMonitor implements SiteMonitor {
 
       // 提取主产品区域的文本(排除推荐商品)
       const mainInfo = await page.evaluate(() => {
-        // 找主产品区域(Shopify 主题通常在 .product 或 .product__info 里)
+        // 精确定位主产品区域(Shopify Dawn 主题的标准结构)
         const mainEl =
+          document.querySelector('product-info#MainProduct-template--25882672759070__main') ||
+          document.querySelector('product-info[id^="MainProduct-"]') ||
+          document.querySelector('product-info') ||
           document.querySelector('.product__info') ||
-          document.querySelector('.product-info') ||
-          document.querySelector('.product-form') ||
           document.querySelector('main');
 
         const mainText = mainEl ? (mainEl as HTMLElement).innerText || '' : '';
 
-        // 找加购按钮
-        const addBtn = document.querySelector('.product-form__submit, .add-to-cart, button[type="submit"]');
+        // 找加购按钮(第一个 product-form__submit 是主商品的)
+        const addBtn = document.querySelector('button.product-form__submit');
         const btnText = addBtn ? (addBtn.textContent || '').trim() : '';
         const btnDisabled = addBtn ? (addBtn as HTMLButtonElement).disabled || addBtn.hasAttribute('disabled') : true;
 
-        // 找价格
-        const priceEl = document.querySelector('.price, .product-price, [data-price]');
-        const price = priceEl ? (priceEl.textContent || '').trim() : '';
+        // 找价格(第一个 .price-item--regular 是主商品的)
+        const priceEl = document.querySelector('.price-item--regular');
+        const rawPrice = priceEl ? (priceEl.textContent || '').trim() : '';
+        // 清理价格文本:只保留数字和货币符号
+        const price = rawPrice.match(/HK\$[\d,]+\.?\d*/)?.[0] || rawPrice;
 
         return { mainText, btnText, btnDisabled, price };
       });
