@@ -49,10 +49,20 @@ export class SpMonitor implements SiteMonitor {
         })
         .catch(() => '');
 
-      // 判断缺货(宽松策略):
-      // 1. 只要页面明确包含缺货文本,才认定缺货
-      // 2. 不依赖按钮状态(部分商品按钮置灰但实际可加购)
-      // 3. 按钮不存在也不一定是缺货(可能是页面结构不同)
+      // 判断缺货(宽松策略,但需要验证页面已正常加载):
+      // 1. 先验证页面内容不为空(Captcha盾拦截时页面为空,不能误判为有货)
+      // 2. 页面明确包含缺货文本 → 缺货
+      // 3. 无缺货文本且页面有内容 → 有货
+      // 4. 不依赖按钮状态(部分商品按钮置灰但实际可加购)
+
+      // Captcha盾检测:页面标题含 "Just a moment" 或正文过短
+      const pageTitle = await page.title().catch(() => '');
+      const isCaptchaBlocked = pageTitle.includes('Just a moment') || pageText.length < 200;
+
+      if (isCaptchaBlocked) {
+        return { inStock: false, detail: '页面未加载完成(Captcha盾),无法判断' };
+      }
+
       const outOfStockTexts = [
         'temporarily out of stock',
         'out of stock',
