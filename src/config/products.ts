@@ -32,8 +32,7 @@ export const PRODUCTS: ProductConfig[] = [
   {
     site: 'life',
     name: 'FVF 250g',
-    url: 'https://tobaccolifestyle.com/zh/products/%E5%A1%9E%E7%BC%AA%E5%B0%94%E7%9A%84%E5%89%AF%E6%9C%AC%E5%8A%A0%E7%BB%B4%E6%96%AF-smoking-tobacco-to31459-full-%E5%BC%97%E5%90%89%E5%B0%BC%E4%BA%9A-%E5%88%87%E7%89%87-%E9%93%81%E7%BD%9150%E5%85%8B?variant=47573980905758',
-    variantId: 47573980905758,
+    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E5%A1%9E%E7%BC%AA%E5%B0%94%E7%9A%84%E5%89%AF%E6%9C%AC%E5%8A%A0%E7%BB%B4%E6%96%AF-smoking-tobacco-to31459-full-%E5%BC%97%E5%90%89%E5%B0%BC%E4%BA%9A-%E5%88%87%E7%89%87-%E9%93%81%E7%BD%9050%E5%85%8B',
   },
   {
     site: 'life',

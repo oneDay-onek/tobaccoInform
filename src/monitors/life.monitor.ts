@@ -32,11 +32,8 @@ export class LifeMonitor implements SiteMonitor {
   async checkStock(url: string, extra?: Record<string, unknown>): Promise<StockResult> {
     // 从 extra 取 variantId,或从 URL 解析 ?variant=xxx
     const variantId = (extra?.variantId as number) ?? this.extractVariantId(url);
-    if (!variantId) {
-      return { inStock: false, detail: '未找到 variant ID' };
-    }
 
-    // 构造 Shopify JSON API URL
+    // 构造 Shopify JSON API URL(支持 /products/ 和 /collections/x/products/ 两种路径)
     const jsonUrl = this.buildJsonUrl(url);
 
     // 带重试的请求(429 限流时指数退避)
@@ -57,7 +54,10 @@ export class LifeMonitor implements SiteMonitor {
           return { inStock: false, detail: '未获取到产品数据' };
         }
 
-        const variant = product.variants.find((v) => v.id === variantId);
+        // 匹配 variant:有指定 ID 就找,没有就用第一个
+        const variant = variantId
+          ? product.variants.find((v) => v.id === variantId)
+          : product.variants[0];
         if (!variant) {
           return { inStock: false, detail: `未找到 variant ${variantId}` };
         }
@@ -90,12 +90,15 @@ export class LifeMonitor implements SiteMonitor {
 
   /**
    * 把商品页面 URL 转换为 Shopify JSON API URL
-   * 去掉 query 参数,在 handle 后加 .json
+   * 支持两种路径:
+   *   /products/{handle}                  → /products/{handle}.json
+   *   /collections/{c}/products/{handle}  → /products/{handle}.json
    */
   private buildJsonUrl(url: string): string {
     // 去掉 query 部分
-    const baseUrl = url.split('?')[0];
-    // 去掉可能的末尾斜杠
-    return `${baseUrl.replace(/\/$/, '')}.json`;
+    const baseUrl = url.split('?')[0].replace(/\/$/, '');
+    // 如果包含 /collections/xxx/products/,替换为 /products/
+    const normalizedUrl = baseUrl.replace(/\/collections\/[^/]+\/products\//, '/products/');
+    return `${normalizedUrl}.json`;
   }
 }
