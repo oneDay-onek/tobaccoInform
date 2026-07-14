@@ -101,8 +101,8 @@ async function main() {
       console.error(`[${product.site}] ${product.name}: 查询失败 - ${msg}`);
       results.push({ product, result: { inStock: false }, error: msg });
     }
-    // 请求间隔,避免触发限流(生活站2秒,SP站1秒,Uncle站1秒)
-    await sleep(product.site === 'life' ? 2000 : 1000);
+    // 请求间隔,避免触发限流
+    await sleep(1000);
   }
 
   // 收集需要通知的商品(有货 + 状态去重)
@@ -163,6 +163,10 @@ async function main() {
   const spMonitor = monitorCache['sp'] as SpMonitor | undefined;
   if (spMonitor && typeof (spMonitor as { close?: () => Promise<void> }).close === 'function') {
     await (spMonitor as { close: () => Promise<void> }).close();
+  }
+  const lifeMonitor = monitorCache['life'] as LifeMonitor | undefined;
+  if (lifeMonitor && typeof (lifeMonitor as { close?: () => Promise<void> }).close === 'function') {
+    await (lifeMonitor as { close: () => Promise<void> }).close();
   }
 }
 
