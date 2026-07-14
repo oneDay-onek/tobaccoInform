@@ -150,4 +150,9 @@ export const PRODUCTS: ProductConfig[] = [
     name: '威棍子 275g',
     url: 'https://www.pipeuncle.com/products/2864',
   },
+  {
+    site: 'uncle',
+    name: '红法软包 50g',
+    url: 'https://www.pipeuncle.com/products/105',
+  },
 ];
