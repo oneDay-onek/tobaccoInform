@@ -62,10 +62,16 @@ export class LifeMonitor implements SiteMonitor {
           return { inStock: false, detail: `未找到 variant ${variantId}` };
         }
 
-        const inStock = variant.available && (variant.inventory_quantity ?? 0) > 0;
+        // 库存判断(宽松策略):
+        // 1. available=true 即认为有货(Shopify 已综合判断)
+        // 2. 即使 inventory_quantity=0,只要 available=true 也认为有货
+        //    (部分店铺关闭了库存追踪,inventory_quantity 始终为0但实际可售)
+        // 3. 仅当 available=false 时才认定缺货
+        const inStock = variant.available;
+        const qty = variant.inventory_quantity ?? 0;
         return {
           inStock,
-          detail: `库存: ${variant.inventory_quantity ?? 0} / 价格: HK$${variant.price}`,
+          detail: `库存: ${qty} / 价格: HK$${variant.price}` + (inStock && qty === 0 ? ' (可售)' : ''),
         };
       } catch (err) {
         lastError = err as Error;

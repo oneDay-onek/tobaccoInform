@@ -4,7 +4,7 @@
  * 改用 Playwright 无头浏览器执行 JS,自动通过质询后解析页面
  *
  * 缺货标志:页面含 "temporarily out of stock" / "sold out" 等文本
- * 有货标志:无缺货文本 + Add to Cart 按钮可点击
+ * 有货标志:无缺货文本(宽松策略,不依赖按钮状态)
  */
 
 import { chromium, Browser } from 'playwright';
@@ -38,41 +38,8 @@ export class SpMonitor implements SiteMonitor {
       // 额外等待,确保JS盾通过 + 内容渲染
       await page.waitForTimeout(3000);
 
-      // 获取页面文本和按钮状态
+      // 获取页面文本
       const pageText = await page.evaluate(() => document.body.innerText || '');
-
-      // 用 Playwright 的 locator API 查找 Add to Cart 按钮(支持 :has-text)
-      const buttonInfo = await page
-        .evaluate(() => {
-          // 标准 CSS 选择器查 input 按钮
-          const inputBtn = document.querySelector(
-            'input[type="submit"][value*="dd to cart" i], input[type="submit"][value*="dd to Cart" i], input.add-to-cart'
-          ) as HTMLInputElement | null;
-          if (inputBtn) {
-            return {
-              exists: true,
-              disabled: inputBtn.disabled || inputBtn.hasAttribute('disabled'),
-            };
-          }
-          // 标准 CSS 选择器查 button(用 textContent 模糊匹配,因为 :has-text 是 Playwright 专属)
-          const buttons = Array.from(document.querySelectorAll('button, input[type="submit"], input[type="button"]'));
-          for (const btn of buttons) {
-            const text = (btn.textContent || (btn as HTMLInputElement).value || '').trim();
-            if (/add to cart/i.test(text)) {
-              return {
-                exists: true,
-                disabled: (btn as HTMLButtonElement).disabled || btn.hasAttribute('disabled'),
-              };
-            }
-          }
-          // 兜底:找 .add-to-cart 类
-          const fallback = document.querySelector('.add-to-cart') as HTMLElement | null;
-          if (fallback) {
-            return { exists: true, disabled: fallback.hasAttribute('disabled') };
-          }
-          return { exists: false, disabled: true };
-        })
-        .catch(() => ({ exists: false, disabled: true }));
 
       // 尝试提取价格
       const priceText = await page
@@ -82,29 +49,31 @@ export class SpMonitor implements SiteMonitor {
         })
         .catch(() => '');
 
-      // 判断缺货
+      // 判断缺货(宽松策略):
+      // 1. 只要页面明确包含缺货文本,才认定缺货
+      // 2. 不依赖按钮状态(部分商品按钮置灰但实际可加购)
+      // 3. 按钮不存在也不一定是缺货(可能是页面结构不同)
       const outOfStockTexts = [
         'temporarily out of stock',
         'out of stock',
         'sold out',
         'currently unavailable',
         'no longer available',
+        'not available',
+        'discontinued',
       ];
       const isOutOfStockText = outOfStockTexts.some((t) =>
         pageText.toLowerCase().includes(t.toLowerCase())
       );
-      const isButtonDisabled = !buttonInfo.exists || buttonInfo.disabled;
 
-      // 综合判断:无缺货文本 + 按钮可点击 = 有货
-      const inStock = !isOutOfStockText && !isButtonDisabled;
+      // 仅当明确出现缺货文本时才判定为缺货
+      const inStock = !isOutOfStockText;
 
       return {
         inStock,
         detail: inStock
           ? `有货${priceText ? ` / 价格: ${priceText}` : ''}`
-          : isOutOfStockText
-          ? '缺货'
-          : '按钮不可用',
+          : '缺货',
       };
     } finally {
       await context.close();
