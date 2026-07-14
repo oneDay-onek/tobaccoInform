@@ -26,11 +26,17 @@ export class SpMonitor implements SiteMonitor {
     const page = await context.newPage();
 
     try {
-      // 导航到商品页,等待网络空闲(确保JS盾通过 + 内容加载)
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      // 导航到商品页,用 domcontentloaded 比 networkidle 更快更稳
+      // SP站有持续请求,networkidle 会一直等不到
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
 
-      // 额外等待,确保页面渲染完成
-      await page.waitForTimeout(2000);
+      // 等待页面主要内容加载(最多10秒,超时也继续)
+      await page
+        .waitForSelector('body', { timeout: 10000 })
+        .catch(() => {});
+
+      // 额外等待,确保JS盾通过 + 内容渲染
+      await page.waitForTimeout(3000);
 
       // 获取页面文本和按钮状态
       const pageText = await page.evaluate(() => document.body.innerText || '');
