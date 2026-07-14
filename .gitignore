@@ -1,0 +1,16 @@
+# 依赖
+node_modules/
+
+# 编译输出
+dist/
+
+# 本地状态文件(运行时生成,记录库存状态用于去重)
+state.json
+
+# 环境变量
+.env
+.env.local
+
+# 系统
+.DS_Store
+*.log
