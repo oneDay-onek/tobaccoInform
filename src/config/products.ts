@@ -155,4 +155,23 @@ export const PRODUCTS: ProductConfig[] = [
     name: '红法软包 50g',
     url: 'https://www.pipeuncle.com/products/105',
   },
+
+  // ============ 测试商品(用于验证通知文案) ============
+  {
+    site: 'sp',
+    name: '彼得森小白 50g',
+    url: 'https://www.smokingpipes.com/pipe-tobacco/peterson/flake-50g/product_id/346523',
+  },
+  {
+    site: 'life',
+    name: '蓝绞盘 50g',
+    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E7%BB%9E%E7%9B%98-%E5%8E%9F%E7%89%88-%E5%88%87%E7%89%87-5-%E9%93%81%E7%BD%9050%E5%85%8B',
+  },
+
+  // ============ 生活站(追加) ============
+  {
+    site: 'life',
+    name: '黄绞盘 50g',
+    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E7%BB%9E%E7%9B%98-%E5%8E%9F%E7%89%88-%E5%88%87%E7%89%87-5-%E9%93%81%E7%BD%9050%E5%85%8B',
+  },
 ];
