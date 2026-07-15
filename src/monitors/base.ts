@@ -9,6 +9,8 @@ export interface StockResult {
   inStock: boolean;
   /** 额外信息(如库存数量、价格等),用于通知展示 */
   detail?: string;
+  /** 是否被 Cloudflare/Captcha 拦截,true 时库存状态未知,不应覆盖历史记录 */
+  blocked?: boolean;
 }
 
 /** 站点适配器接口 */

@@ -94,12 +94,12 @@ async function main() {
       const monitor = getMonitor(product.site);
       const extra = product.variantId ? { variantId: product.variantId } : undefined;
       const result = await monitor.checkStock(product.url, extra);
-      console.log(`[${product.site}] ${product.name}: ${result.inStock ? '✅有货' : '❌缺货'} ${result.detail || ''}`);
+      console.log(`[${product.site}] ${product.name}: ${result.blocked ? '⚠️被拦截' : result.inStock ? '✅有货' : '❌缺货'} ${result.detail || ''}`);
       results.push({ product, result });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error(`[${product.site}] ${product.name}: 查询失败 - ${msg}`);
-      results.push({ product, result: { inStock: false }, error: msg });
+      results.push({ product, result: { inStock: false, blocked: true }, error: msg });
     }
     // 请求间隔,避免触发限流
     await sleep(1000);
@@ -114,8 +114,10 @@ async function main() {
         toNotify.push(r);
       }
     }
-    // 无论是否通知,都更新状态
-    state.update(productKey(r.product), r.result.inStock, false);
+    // blocked=true 时跳过状态更新,保留历史状态避免误判
+    if (!r.result.blocked) {
+      state.update(productKey(r.product), r.result.inStock, false);
+    }
   }
 
   // 聚合推送
@@ -156,8 +158,9 @@ async function main() {
 
   // 汇总
   const inStockCount = results.filter((r) => r.result.inStock).length;
-  const errorCount = results.filter((r) => r.error).length;
-  console.log(`\n[main] 完成: 有货 ${inStockCount} / 缺货 ${results.length - inStockCount - errorCount} / 失败 ${errorCount}`);
+  const blockedCount = results.filter((r) => r.result.blocked).length;
+  const errorCount = results.filter((r) => r.error && !r.result.blocked).length;
+  console.log(`\n[main] 完成: 有货 ${inStockCount} / 缺货 ${results.length - inStockCount - blockedCount - errorCount} / 被拦截 ${blockedCount} / 失败 ${errorCount}`);
 
   // 关闭 Playwright 浏览器(如有)
   const spMonitor = monitorCache['sp'] as SpMonitor | undefined;

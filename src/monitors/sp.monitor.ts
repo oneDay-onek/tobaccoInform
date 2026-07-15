@@ -47,30 +47,19 @@ export class SpMonitor implements SiteMonitor {
         .waitForSelector('body', { timeout: 10000 })
         .catch(() => {});
 
-      // Captcha 盾自动放行检测:
-      // GitHub Actions 的 IP 是数据中心 IP,容易被 Cloudflare 拦截
-      // 但大多情况下 Captcha 盾会在 5-10 秒后自动放行(无需人工点击)
-      // 这里循环检测,最多等 30 秒
-      let captchaPassed = false;
-      for (let i = 0; i < 6; i++) {
-        await page.waitForTimeout(5000);
-        const currentTitle = await page.title().catch(() => '');
-        const currentText = await page
-          .evaluate(() => (document.body && document.body.innerText) || '')
-          .catch(() => '');
-        if (!currentTitle.includes('Just a moment') && currentText.length > 200) {
-          captchaPassed = true;
-          break;
-        }
-        // 如果还在盾页,刷新一下触发重新检测
-        if (i === 2) {
-          await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
-        }
+      // 等待 Cloudflare JS Challenge 放行,最多 30 秒
+      // Cloudflare "Just a moment" 页面会在几秒内自动跳转,轮询直到离开该页面
+      const POLL_MS = 3000;
+      const deadline = Date.now() + 30000;
+      while (Date.now() < deadline) {
+        const title = await page.title().catch(() => '');
+        const bodyText = await page.evaluate(() => document.body?.innerText || '').catch(() => '');
+        if (!title.includes('Just a moment') && bodyText.length >= 200) break;
+        await page.waitForTimeout(POLL_MS);
       }
 
       // 获取页面文本
       const pageText = await page.evaluate(() => document.body.innerText || '');
-      console.log(`  [sp] Captcha 盾状态: ${captchaPassed ? '已通过' : '未通过'}, 页面长度: ${pageText.length}`);
 
       // 尝试提取价格
       const priceText = await page
@@ -80,18 +69,12 @@ export class SpMonitor implements SiteMonitor {
         })
         .catch(() => '');
 
-      // 判断缺货(宽松策略,但需要验证页面已正常加载):
-      // 1. 先验证页面内容不为空(Captcha盾拦截时页面为空,不能误判为有货)
-      // 2. 页面明确包含缺货文本 → 缺货
-      // 3. 无缺货文本且页面有内容 → 有货
-      // 4. 不依赖按钮状态(部分商品按钮置灰但实际可加购)
-
-      // Captcha盾检测:页面标题含 "Just a moment" 或正文过短
+      // Captcha盾检测:30s 等待后页面仍未加载,视为 blocked(库存状态未知)
       const pageTitle = await page.title().catch(() => '');
       const isCaptchaBlocked = pageTitle.includes('Just a moment') || pageText.length < 200;
 
       if (isCaptchaBlocked) {
-        return { inStock: false, detail: '页面未加载完成(Captcha盾),无法判断' };
+        return { inStock: false, blocked: true, detail: 'Cloudflare拦截(30s等待超时),库存状态未知' };
       }
 
       const outOfStockTexts = [
