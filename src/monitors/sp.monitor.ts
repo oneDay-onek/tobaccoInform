@@ -22,7 +22,19 @@ export class SpMonitor implements SiteMonitor {
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
       locale: 'en-US',
       viewport: { width: 1280, height: 720 },
+      extraHTTPHeaders: {
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
     });
+
+    // 注入反检测脚本,隐藏 Playwright/webdriver 标志,避免触发 Captcha 盾
+    await context.addInitScript(() => {
+      Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+      Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
+      Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+      (window as any).chrome = { runtime: {} };
+    });
+
     const page = await context.newPage();
 
     try {
@@ -95,7 +107,11 @@ export class SpMonitor implements SiteMonitor {
     if (!this.browserPromise) {
       this.browserPromise = chromium.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-blink-features=AutomationControlled',
+        ],
       });
     }
     return this.browserPromise;
