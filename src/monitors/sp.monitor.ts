@@ -47,11 +47,30 @@ export class SpMonitor implements SiteMonitor {
         .waitForSelector('body', { timeout: 10000 })
         .catch(() => {});
 
-      // 额外等待,确保JS盾通过 + 内容渲染
-      await page.waitForTimeout(3000);
+      // Captcha 盾自动放行检测:
+      // GitHub Actions 的 IP 是数据中心 IP,容易被 Cloudflare 拦截
+      // 但大多情况下 Captcha 盾会在 5-10 秒后自动放行(无需人工点击)
+      // 这里循环检测,最多等 30 秒
+      let captchaPassed = false;
+      for (let i = 0; i < 6; i++) {
+        await page.waitForTimeout(5000);
+        const currentTitle = await page.title().catch(() => '');
+        const currentText = await page
+          .evaluate(() => (document.body && document.body.innerText) || '')
+          .catch(() => '');
+        if (!currentTitle.includes('Just a moment') && currentText.length > 200) {
+          captchaPassed = true;
+          break;
+        }
+        // 如果还在盾页,刷新一下触发重新检测
+        if (i === 2) {
+          await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
+        }
+      }
 
       // 获取页面文本
       const pageText = await page.evaluate(() => document.body.innerText || '');
+      console.log(`  [sp] Captcha 盾状态: ${captchaPassed ? '已通过' : '未通过'}, 页面长度: ${pageText.length}`);
 
       // 尝试提取价格
       const priceText = await page
