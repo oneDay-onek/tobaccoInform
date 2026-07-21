@@ -51,11 +51,6 @@ export const PRODUCTS: ProductConfig[] = [
     name: '黄绞盘 50g',
     url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E7%BB%9E%E7%9B%98-%E9%87%91%E5%AD%90-%E5%88%87%E7%89%87-5-%E9%93%81%E7%BD%9050%E5%85%8B',
   },
-  {
-    site: 'life',
-    name: '金光菊 250g',
-    url: 'https://tobaccolifestyle.com/zh/collections/%E7%83%9F%E6%96%97%E7%83%9F%E8%8D%89/products/%E5%A1%9E%E7%BC%AA%E5%B0%94-%E5%8A%A0%E7%BB%B4%E6%96%AF250%E5%85%8B%E9%87%91%E8%89%B2%E5%8F%91%E5%85%89%E7%9B%92',
-  },
   // ============ SP站 ============
   {
     site: 'sp',
