@@ -108,12 +108,13 @@ export class StateStorage {
       let notifiedTimeChanged = false;
 
       if (!prev) {
-        // 首次见到的渠道:仅当当前有货时触发首次通知。
-        // 不触发"补货时间更新",否则首次运行会把所有历史 lastNotifiedTime 都刷一遍。
-        // lastNotifiedTime 仍会写入快照,下次运行起开始正常对比。
-        restocked = ch.isInStock === 1;
+        // 首次见到的渠道:不触发任何通知,只建立基线快照。
+        // 因为"当前有货"不代表"刚刚补货",可能是历史补货还在售。
+        // 真正的补货事件要等下次 isInStock 0→1 或 lastNotifiedTime 变化才触发。
+        restocked = false;
         notifiedTimeChanged = false;
       } else {
+        // 0→1 才算补货(1→1 持续有货不触发,符合"持续未售空不重复提示"的要求)
         restocked = prev.isInStock === 0 && ch.isInStock === 1;
         notifiedTimeChanged =
           ch.lastNotifiedTime !== null && ch.lastNotifiedTime !== prev.lastNotifiedTime;
