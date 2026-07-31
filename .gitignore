@@ -4,6 +4,9 @@ node_modules/
 # 编译输出
 dist/
 
+# 运行时状态快照(仅在 product 分支累积,main 保持干净)
+state.json
+
 # 环境变量
 .env
 .env.local

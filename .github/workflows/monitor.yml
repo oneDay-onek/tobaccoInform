@@ -3,10 +3,6 @@ name: 烟草比价监控
 on:
   workflow_dispatch: # 仅支持手动/外部API触发(cron-job.org 定时调用 GitHub API)
 
-# 允许 workflow 用默认 GITHUB_TOKEN 推送 state.json 回仓库
-permissions:
-  contents: write
-
 jobs:
   monitor:
     runs-on: ubuntu-latest
@@ -32,16 +28,3 @@ jobs:
         env:
           QY_WECHAT_WEBHOOK: ${{ secrets.QY_WECHAT_WEBHOOK }}
         run: node dist/index.js
-
-      - name: 持久化 state.json(若有变化)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet state.json; then
-            echo "state.json 未变化,跳过提交"
-          else
-            git add state.json
-            git commit -m "chore: 更新监控状态快照 [skip ci]"
-            git push
-            echo "state.json 已提交"
-          fi
