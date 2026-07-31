@@ -1,4 +1,4 @@
-name: 烟草库存监控
+name: 烟草比价监控
 
 on:
   workflow_dispatch: # 仅支持手动/外部API触发(cron-job.org 定时调用 GitHub API)
@@ -6,7 +6,7 @@ on:
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - name: 检出代码
@@ -20,9 +20,6 @@ jobs:
 
       - name: 安装依赖
         run: npm ci
-
-      - name: 安装 Playwright 浏览器(SP站需要无头浏览器过盾)
-        run: npx playwright install --with-deps chromium
 
       - name: 编译 TypeScript
         run: npm run build

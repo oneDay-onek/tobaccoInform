@@ -1,7 +1,13 @@
 /**
  * 状态去重存储
- * 记录每个商品上次的库存状态,避免同一商品有货期间重复推送
- * 本地使用 state.json 文件持久化,GitHub Actions 中使用 actions cache 或每次重新判断
+ *
+ * 由于切换到 cigar.cab 聚合 API,状态粒度改为:
+ *   key = productId
+ *   value = { 各渠道的 (isInStock, lastNotifiedTime) 快照 }
+ *
+ * 触发通知的条件(任一渠道满足即触发):
+ *   1. isInStock: 0 → 1  (无货→有货)
+ *   2. lastNotifiedTime: 变化且非 null  (cigar.cab 标记的补货事件)
  */
 
 import * as fs from 'fs';
@@ -9,18 +15,40 @@ import * as path from 'path';
 
 const STATE_FILE = path.resolve(process.cwd(), 'state.json');
 
+/** 单个渠道的快照状态 */
+export interface ChannelSnapshot {
+  /** 0=缺货, 1=有货 */
+  isInStock: number;
+  /** cigar.cab 标记的最近补货通知时间(可能为 null) */
+  lastNotifiedTime: string | null;
+}
+
 /** 单个商品的状态记录 */
 interface ProductState {
-  /** 是否有货 */
-  inStock: boolean;
-  /** 上次通知时间戳(ms) */
+  /** 各渠道快照,key 为 channel.id(字符串化) */
+  channels: Record<string, ChannelSnapshot>;
+  /** 上次触发通知的时间戳(ms) */
   lastNotifyAt: number;
   /** 上次检查时间戳(ms) */
   lastCheckAt: number;
 }
 
-/** 全部商品状态: { [productKey]: ProductState } */
+/** 全部商品状态: { [productId]: ProductState } (JSON 中 key 为字符串) */
 type StateMap = Record<string, ProductState>;
+
+/** 渠道变化描述(用于文案生成) */
+export interface ChannelChange {
+  /** 渠道 ID */
+  channelId: number;
+  /** 0→1 触发 */
+  restocked: boolean;
+  /** lastNotifiedTime 变化触发 */
+  notifiedTimeChanged: boolean;
+  /** 旧值 */
+  prev?: ChannelSnapshot;
+  /** 新值 */
+  curr: ChannelSnapshot;
+}
 
 export class StateStorage {
   private state: StateMap = {};
@@ -29,7 +57,6 @@ export class StateStorage {
     this.load();
   }
 
-  /** 从本地文件加载状态 */
   private load() {
     try {
       if (fs.existsSync(STATE_FILE)) {
@@ -37,12 +64,14 @@ export class StateStorage {
         this.state = JSON.parse(raw);
       }
     } catch (err) {
-      console.warn('[state] 状态文件读取失败,将使用空状态:', err instanceof Error ? err.message : err);
+      console.warn(
+        '[state] 状态文件读取失败,将使用空状态:',
+        err instanceof Error ? err.message : err
+      );
       this.state = {};
     }
   }
 
-  /** 保存状态到本地文件 */
   private save() {
     try {
       fs.writeFileSync(STATE_FILE, JSON.stringify(this.state, null, 2), 'utf-8');
@@ -52,34 +81,83 @@ export class StateStorage {
   }
 
   /**
-   * 判断是否需要通知
-   * 规则:上次无货/无记录 → 这次有货 = 需要通知
-   *       上次有货 → 这次有货 = 不通知(避免重复打扰)
+   * 对比某 productId 当前各渠道状态与上次快照,返回发生变化的渠道列表。
+   *
+   * 变化定义(任一满足即视为变化):
+   *   - isInStock: 0 → 1
+   *   - lastNotifiedTime: 旧值不同(且新值非 null,旧值不限制)
+   *
+   * 首次检查该渠道时:若 isInStock=1 或 lastNotifiedTime 非 null,也视为变化(触发首次通知)。
    */
-  shouldNotify(productKey: string, currentInStock: boolean): boolean {
-    const prev = this.state[productKey];
-    // 首次检查 或 上次无货,现在有货
-    if (!prev || (!prev.inStock && currentInStock)) {
-      return true;
+  diffChannels(
+    productId: number,
+    current: Array<{ id: number; isInStock: number; lastNotifiedTime: string | null }>
+  ): ChannelChange[] {
+    const prevProduct = this.state[String(productId)];
+    const prevChannels = prevProduct?.channels || {};
+    const changes: ChannelChange[] = [];
+
+    for (const ch of current) {
+      const prev = prevChannels[String(ch.id)];
+      const curr: ChannelSnapshot = {
+        isInStock: ch.isInStock,
+        lastNotifiedTime: ch.lastNotifiedTime,
+      };
+
+      let restocked = false;
+      let notifiedTimeChanged = false;
+
+      if (!prev) {
+        // 首次见到的渠道:仅当当前有货时触发首次通知。
+        // 不触发"补货时间更新",否则首次运行会把所有历史 lastNotifiedTime 都刷一遍。
+        // lastNotifiedTime 仍会写入快照,下次运行起开始正常对比。
+        restocked = ch.isInStock === 1;
+        notifiedTimeChanged = false;
+      } else {
+        restocked = prev.isInStock === 0 && ch.isInStock === 1;
+        notifiedTimeChanged =
+          ch.lastNotifiedTime !== null && ch.lastNotifiedTime !== prev.lastNotifiedTime;
+      }
+
+      if (restocked || notifiedTimeChanged) {
+        changes.push({
+          channelId: ch.id,
+          restocked,
+          notifiedTimeChanged,
+          prev,
+          curr,
+        });
+      }
     }
-    return false;
+
+    return changes;
   }
 
-  /**
-   * 更新商品状态
-   */
-  update(productKey: string, inStock: boolean, notified: boolean) {
+  /** 提交本次检查的快照(覆盖式更新该 productId 的全部渠道状态) */
+  commit(
+    productId: number,
+    current: Array<{ id: number; isInStock: number; lastNotifiedTime: string | null }>,
+    notified: boolean
+  ) {
     const now = Date.now();
-    this.state[productKey] = {
-      inStock,
-      lastNotifyAt: notified ? now : this.state[productKey]?.lastNotifyAt ?? 0,
+    const channels: Record<string, ChannelSnapshot> = {};
+    for (const ch of current) {
+      channels[String(ch.id)] = {
+        isInStock: ch.isInStock,
+        lastNotifiedTime: ch.lastNotifiedTime,
+      };
+    }
+    const prev = this.state[String(productId)];
+    this.state[String(productId)] = {
+      channels,
+      lastNotifyAt: notified ? now : prev?.lastNotifyAt ?? 0,
       lastCheckAt: now,
     };
     this.save();
   }
 
-  /** 获取某商品上次状态(调试用) */
-  get(productKey: string): ProductState | undefined {
-    return this.state[productKey];
+  /** 调试用:读取某 productId 状态 */
+  get(productId: number): ProductState | undefined {
+    return this.state[String(productId)];
   }
 }

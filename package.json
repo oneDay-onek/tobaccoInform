@@ -1,28 +1,27 @@
 {
   "name": "tobacco-inform",
-  "version": "1.0.0",
-  "description": "海淘烟草库存监控,定时轮询目标URL,有货时通过企业微信推送通知",
+  "version": "2.0.0",
+  "description": "海淘烟草比价监控,基于 cigar.cab 聚合 API,状态变化时通过企业微信推送通知",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "test:life": "ts-node src/index.ts --site=life",
-    "test:sp": "ts-node src/index.ts --site=sp",
+    "dry-run": "ts-node src/index.ts --dry-run",
+    "test:product": "ts-node src/index.ts --product=8721 --dry-run",
     "test:notify": "ts-node src/index.ts --test-notify"
   },
   "keywords": [
     "tobacco",
+    "cigar",
+    "price",
     "monitor",
-    "stock",
     "wechat"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.7.0",
-    "cheerio": "^1.0.0",
-    "playwright": "^1.61.1"
+    "axios": "^1.7.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
