@@ -15,7 +15,7 @@
       }
     },
     "lastNotifyAt": 1790925935865,
-    "lastCheckAt": 1790931366962
+    "lastCheckAt": 1790931671559
   },
   "8717": {
     "channels": {
@@ -57,7 +57,7 @@
       }
     },
     "lastNotifyAt": 1788959444330,
-    "lastCheckAt": 1790931366964
+    "lastCheckAt": 1790931671561
   },
   "8718": {
     "channels": {
@@ -71,7 +71,7 @@
       },
       "6749": {
         "isInStock": 0,
-        "lastNotifiedTime": "2026-10-02 16:32:11"
+        "lastNotifiedTime": "2026-10-02 16:49:20"
       },
       "32810": {
         "isInStock": 0,
@@ -102,8 +102,8 @@
         "lastNotifiedTime": "2026-08-18 21:59:30"
       }
     },
-    "lastNotifyAt": 1790930738927,
-    "lastCheckAt": 1790931366962
+    "lastNotifyAt": 1790931671560,
+    "lastCheckAt": 1790931671560
   },
   "8721": {
     "channels": {
@@ -149,7 +149,7 @@
       }
     },
     "lastNotifyAt": 1790916338424,
-    "lastCheckAt": 1790931366963
+    "lastCheckAt": 1790931671560
   },
   "8929": {
     "channels": {
@@ -195,7 +195,7 @@
       }
     },
     "lastNotifyAt": 1790242531514,
-    "lastCheckAt": 1790931366964
+    "lastCheckAt": 1790931671561
   },
   "11627": {
     "channels": {
@@ -253,7 +253,7 @@
       }
     },
     "lastNotifyAt": 1790857243750,
-    "lastCheckAt": 1790931366964
+    "lastCheckAt": 1790931671561
   },
   "11693": {
     "channels": {
@@ -307,7 +307,7 @@
       }
     },
     "lastNotifyAt": 1790634651195,
-    "lastCheckAt": 1790931366965
+    "lastCheckAt": 1790931671562
   },
   "12463": {
     "channels": {
@@ -393,7 +393,7 @@
       }
     },
     "lastNotifyAt": 1790670687832,
-    "lastCheckAt": 1790931366967
+    "lastCheckAt": 1790931671563
   },
   "12483": {
     "channels": {
@@ -475,7 +475,7 @@
       }
     },
     "lastNotifyAt": 1790928943443,
-    "lastCheckAt": 1790931366967
+    "lastCheckAt": 1790931671564
   },
   "12509": {
     "channels": {
@@ -569,7 +569,7 @@
       }
     },
     "lastNotifyAt": 1790670687830,
-    "lastCheckAt": 1790931366965
+    "lastCheckAt": 1790931671562
   },
   "12513": {
     "channels": {
@@ -611,7 +611,7 @@
       }
     },
     "lastNotifyAt": 1789623332649,
-    "lastCheckAt": 1790931366965
+    "lastCheckAt": 1790931671562
   },
   "12550": {
     "channels": {
@@ -705,7 +705,7 @@
       }
     },
     "lastNotifyAt": 1789803940894,
-    "lastCheckAt": 1790931366966
+    "lastCheckAt": 1790931671562
   },
   "12567": {
     "channels": {
@@ -743,7 +743,7 @@
       }
     },
     "lastNotifyAt": 1790671546809,
-    "lastCheckAt": 1790931366966
+    "lastCheckAt": 1790931671563
   },
   "12570": {
     "channels": {
@@ -833,7 +833,7 @@
       }
     },
     "lastNotifyAt": 1790735453387,
-    "lastCheckAt": 1790931366966
+    "lastCheckAt": 1790931671563
   },
   "14226": {
     "channels": {
@@ -871,7 +871,7 @@
       }
     },
     "lastNotifyAt": 1790634651536,
-    "lastCheckAt": 1790931366968
+    "lastCheckAt": 1790931671564
   },
   "14633": {
     "channels": {
@@ -913,6 +913,6 @@
       }
     },
     "lastNotifyAt": 1790877337548,
-    "lastCheckAt": 1790931366967
+    "lastCheckAt": 1790931671564
   }
 }
