@@ -15,7 +15,7 @@
       }
     },
     "lastNotifyAt": 1793010931982,
-    "lastCheckAt": 1793340642207
+    "lastCheckAt": 1793340944749
   },
   "8717": {
     "channels": {
@@ -57,7 +57,7 @@
       }
     },
     "lastNotifyAt": 1788959444330,
-    "lastCheckAt": 1793340642209
+    "lastCheckAt": 1793340944750
   },
   "8718": {
     "channels": {
@@ -103,7 +103,7 @@
       }
     },
     "lastNotifyAt": 1791876037469,
-    "lastCheckAt": 1793340642208
+    "lastCheckAt": 1793340944749
   },
   "8721": {
     "channels": {
@@ -149,7 +149,7 @@
       }
     },
     "lastNotifyAt": 1791572454455,
-    "lastCheckAt": 1793340642208
+    "lastCheckAt": 1793340944750
   },
   "8929": {
     "channels": {
@@ -195,7 +195,7 @@
       }
     },
     "lastNotifyAt": 1792836940734,
-    "lastCheckAt": 1793340642209
+    "lastCheckAt": 1793340944750
   },
   "11627": {
     "channels": {
@@ -253,7 +253,7 @@
       }
     },
     "lastNotifyAt": 1793178941899,
-    "lastCheckAt": 1793340642209
+    "lastCheckAt": 1793340944751
   },
   "11693": {
     "channels": {
@@ -307,7 +307,7 @@
       }
     },
     "lastNotifyAt": 1793289935086,
-    "lastCheckAt": 1793340642210
+    "lastCheckAt": 1793340944751
   },
   "12463": {
     "channels": {
@@ -332,8 +332,8 @@
         "lastNotifiedTime": null
       },
       "6734": {
-        "isInStock": 0,
-        "lastNotifiedTime": "2026-09-29 16:25:26"
+        "isInStock": 1,
+        "lastNotifiedTime": "2026-10-30 14:07:52"
       },
       "32837": {
         "isInStock": 0,
@@ -392,8 +392,8 @@
         "lastNotifiedTime": null
       }
     },
-    "lastNotifyAt": 1791789929497,
-    "lastCheckAt": 1793340642212
+    "lastNotifyAt": 1793340944753,
+    "lastCheckAt": 1793340944753
   },
   "12483": {
     "channels": {
@@ -475,7 +475,7 @@
       }
     },
     "lastNotifyAt": 1792661133880,
-    "lastCheckAt": 1793340642212
+    "lastCheckAt": 1793340944753
   },
   "12509": {
     "channels": {
@@ -500,8 +500,8 @@
         "lastNotifiedTime": null
       },
       "6735": {
-        "isInStock": 0,
-        "lastNotifiedTime": "2026-10-24 18:05:35"
+        "isInStock": 1,
+        "lastNotifiedTime": "2026-10-30 14:08:27"
       },
       "32843": {
         "isInStock": 0,
@@ -568,8 +568,8 @@
         "lastNotifiedTime": "2026-09-14 22:19:15"
       }
     },
-    "lastNotifyAt": 1792836940735,
-    "lastCheckAt": 1793340642210
+    "lastNotifyAt": 1793340944751,
+    "lastCheckAt": 1793340944751
   },
   "12513": {
     "channels": {
@@ -582,8 +582,8 @@
         "lastNotifiedTime": "2026-02-17 00:00:31"
       },
       "6736": {
-        "isInStock": 0,
-        "lastNotifiedTime": "2026-10-23 16:58:33"
+        "isInStock": 1,
+        "lastNotifiedTime": "2026-10-30 14:08:05"
       },
       "32844": {
         "isInStock": 0,
@@ -610,8 +610,8 @@
         "lastNotifiedTime": "2026-09-14 22:19:13"
       }
     },
-    "lastNotifyAt": 1792746333521,
-    "lastCheckAt": 1793340642211
+    "lastNotifyAt": 1793340944752,
+    "lastCheckAt": 1793340944752
   },
   "12550": {
     "channels": {
@@ -705,7 +705,7 @@
       }
     },
     "lastNotifyAt": 1789803940894,
-    "lastCheckAt": 1793340642211
+    "lastCheckAt": 1793340944752
   },
   "12567": {
     "channels": {
@@ -718,8 +718,8 @@
         "lastNotifiedTime": null
       },
       "6665": {
-        "isInStock": 0,
-        "lastNotifiedTime": "2026-10-24 18:05:55"
+        "isInStock": 1,
+        "lastNotifiedTime": "2026-10-30 14:08:37"
       },
       "32819": {
         "isInStock": 0,
@@ -742,8 +742,8 @@
         "lastNotifiedTime": "2026-09-15 10:46:11"
       }
     },
-    "lastNotifyAt": 1792836940736,
-    "lastCheckAt": 1793340642212
+    "lastNotifyAt": 1793340944752,
+    "lastCheckAt": 1793340944752
   },
   "12570": {
     "channels": {
@@ -768,8 +768,8 @@
         "lastNotifiedTime": null
       },
       "6664": {
-        "isInStock": 0,
-        "lastNotifiedTime": "2026-10-24 18:05:54"
+        "isInStock": 1,
+        "lastNotifiedTime": "2026-10-30 14:08:36"
       },
       "32820": {
         "isInStock": 0,
@@ -832,8 +832,8 @@
         "lastNotifiedTime": "2026-09-14 22:19:16"
       }
     },
-    "lastNotifyAt": 1793118647507,
-    "lastCheckAt": 1793340642211
+    "lastNotifyAt": 1793340944752,
+    "lastCheckAt": 1793340944752
   },
   "14226": {
     "channels": {
@@ -871,7 +871,7 @@
       }
     },
     "lastNotifyAt": 1793133935290,
-    "lastCheckAt": 1793340642213
+    "lastCheckAt": 1793340944754
   },
   "14633": {
     "channels": {
@@ -913,6 +913,6 @@
       }
     },
     "lastNotifyAt": 1793090130077,
-    "lastCheckAt": 1793340642213
+    "lastCheckAt": 1793340944753
   }
 }
