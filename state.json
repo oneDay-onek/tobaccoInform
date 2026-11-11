@@ -15,7 +15,7 @@
       }
     },
     "lastNotifyAt": 1793010931982,
-    "lastCheckAt": 1794392433959
+    "lastCheckAt": 1794392732586
   },
   "8717": {
     "channels": {
@@ -57,7 +57,7 @@
       }
     },
     "lastNotifyAt": 1794261933911,
-    "lastCheckAt": 1794392433962
+    "lastCheckAt": 1794392732588
   },
   "8718": {
     "channels": {
@@ -103,7 +103,7 @@
       }
     },
     "lastNotifyAt": 1791876037469,
-    "lastCheckAt": 1794392433960
+    "lastCheckAt": 1794392732587
   },
   "8721": {
     "channels": {
@@ -149,7 +149,7 @@
       }
     },
     "lastNotifyAt": 1794261933911,
-    "lastCheckAt": 1794392433961
+    "lastCheckAt": 1794392732587
   },
   "8929": {
     "channels": {
@@ -195,7 +195,7 @@
       }
     },
     "lastNotifyAt": 1792836940734,
-    "lastCheckAt": 1794392433962
+    "lastCheckAt": 1794392732588
   },
   "11627": {
     "channels": {
@@ -253,7 +253,7 @@
       }
     },
     "lastNotifyAt": 1794261933912,
-    "lastCheckAt": 1794392433963
+    "lastCheckAt": 1794392732589
   },
   "11693": {
     "channels": {
@@ -307,7 +307,7 @@
       }
     },
     "lastNotifyAt": 1794225035797,
-    "lastCheckAt": 1794392433963
+    "lastCheckAt": 1794392732589
   },
   "12463": {
     "channels": {
@@ -332,7 +332,7 @@
         "lastNotifiedTime": null
       },
       "6734": {
-        "isInStock": 1,
+        "isInStock": 0,
         "lastNotifiedTime": "2026-11-11 18:10:09"
       },
       "32837": {
@@ -393,7 +393,7 @@
       }
     },
     "lastNotifyAt": 1794392134787,
-    "lastCheckAt": 1794392433966
+    "lastCheckAt": 1794392732591
   },
   "12483": {
     "channels": {
@@ -475,7 +475,7 @@
       }
     },
     "lastNotifyAt": 1792661133880,
-    "lastCheckAt": 1794392433967
+    "lastCheckAt": 1794392732593
   },
   "12509": {
     "channels": {
@@ -536,7 +536,7 @@
         "lastNotifiedTime": "2026-01-16 09:36:03"
       },
       "194809": {
-        "isInStock": 1,
+        "isInStock": 0,
         "lastNotifiedTime": "2026-11-11 18:09:15"
       },
       "518924": {
@@ -569,7 +569,7 @@
       }
     },
     "lastNotifyAt": 1794392134785,
-    "lastCheckAt": 1794392433964
+    "lastCheckAt": 1794392732589
   },
   "12513": {
     "channels": {
@@ -583,7 +583,7 @@
       },
       "6736": {
         "isInStock": 0,
-        "lastNotifiedTime": "2026-10-30 14:08:05"
+        "lastNotifiedTime": "2026-11-11 18:10:35"
       },
       "32844": {
         "isInStock": 0,
@@ -610,8 +610,8 @@
         "lastNotifiedTime": "2026-09-14 22:19:13"
       }
     },
-    "lastNotifyAt": 1793340944752,
-    "lastCheckAt": 1794392433964
+    "lastNotifyAt": 1794392732590,
+    "lastCheckAt": 1794392732590
   },
   "12550": {
     "channels": {
@@ -705,7 +705,7 @@
       }
     },
     "lastNotifyAt": 1789803940894,
-    "lastCheckAt": 1794392433965
+    "lastCheckAt": 1794392732590
   },
   "12567": {
     "channels": {
@@ -719,7 +719,7 @@
       },
       "6665": {
         "isInStock": 0,
-        "lastNotifiedTime": "2026-10-30 14:08:37"
+        "lastNotifiedTime": "2026-11-11 18:11:09"
       },
       "32819": {
         "isInStock": 0,
@@ -742,8 +742,8 @@
         "lastNotifiedTime": "2026-09-15 10:46:11"
       }
     },
-    "lastNotifyAt": 1793340944752,
-    "lastCheckAt": 1794392433966
+    "lastNotifyAt": 1794392732591,
+    "lastCheckAt": 1794392732591
   },
   "12570": {
     "channels": {
@@ -769,7 +769,7 @@
       },
       "6664": {
         "isInStock": 0,
-        "lastNotifiedTime": "2026-10-30 14:08:36"
+        "lastNotifiedTime": "2026-11-11 18:10:39"
       },
       "32820": {
         "isInStock": 0,
@@ -832,8 +832,8 @@
         "lastNotifiedTime": "2026-09-14 22:19:16"
       }
     },
-    "lastNotifyAt": 1793340944752,
-    "lastCheckAt": 1794392433965
+    "lastNotifyAt": 1794392732591,
+    "lastCheckAt": 1794392732591
   },
   "14226": {
     "channels": {
@@ -871,7 +871,7 @@
       }
     },
     "lastNotifyAt": 1793133935290,
-    "lastCheckAt": 1794392433968
+    "lastCheckAt": 1794392732593
   },
   "14633": {
     "channels": {
@@ -913,6 +913,6 @@
       }
     },
     "lastNotifyAt": 1794261933915,
-    "lastCheckAt": 1794392433967
+    "lastCheckAt": 1794392732593
   }
 }
